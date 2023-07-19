@@ -7,7 +7,6 @@ class Log {
 
   static getInstance(name?: string, debugOn?: boolean): Log {
     if (!Log.instance) Log.instance = new Log(name, debugOn)
-    console.log("111", name)
     return Log.instance
   }
 
@@ -33,6 +32,14 @@ class Log {
 
   throwErr(msg: string) {
     throw new Error(`[${this.name}]: ${msg}`)
+  }
+
+  time(label: string) {
+    console.time(`[${this.name}] ${label}`)
+  }
+
+  timeEnd(label: string) {
+    console.timeEnd(`[${this.name}] ${label}`)
   }
 }
 

@@ -13,9 +13,9 @@ export interface PluginOptions {
   debug?: boolean // Show debug log
 }
 
-export default async function starterPlugin(params?: PluginOptions) {
+export default async function starterPlugin(params: PluginOptions) {
   const NAME = "vite-plugin-entries-build-cache"
-  const CACHE_DIR = path.resolve(process.cwd(), `.cache/${NAME}`)
+  const CACHE_DIR = path.resolve(process.cwd(), `node_modules/.cache/${NAME}`)
   const { entryRootPath, exclude = [], removeDeletedFiles = false, rootPath = process.cwd(), debug } = params || {}
   const log = Log.getInstance(NAME, debug)
   
@@ -23,10 +23,12 @@ export default async function starterPlugin(params?: PluginOptions) {
   log.debug('params received: ', { entryRootPath, exclude, removeDeletedFiles, rootPath, debug }) 
   const _exclude = [...readGitignore(), ...exclude]
   log.debug('exclude: ', _exclude)
-  const { diff, writeMD5JSON } = await useMD5({ cachePath: CACHE_DIR, entryRootPath, exclude: _exclude, rootPath })
 
+  log.time('diff time')
+  const { diff, writeMD5JSON } = await useMD5({ cachePath: CACHE_DIR, entryRootPath, exclude: _exclude, rootPath })
   const { pub, entries } = diff()
   const { add, edit, del, isChanged } = entries
+  log.timeEnd('diff time')
   log.debug("diff", { pub, entries })
 
   // Vite build.emptyOutDir

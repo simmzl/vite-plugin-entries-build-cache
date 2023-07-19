@@ -32,7 +32,7 @@ export const useMD5 = async ({ cachePath, rootPath, exclude = [], entryRootPath 
   const entryPath = entryRootPath ? path.resolve(rootPath, entryRootPath) : null
 
   // old md5 json
-  const oldMd5s: Record<FileType, Record<string, string>> = JSON.parse(fs.readFileSync(md5sPath, 'utf-8') || '{}')
+  const oldMd5s: Record<FileType, Record<string, string>> = JSON.parse(fs.readFileSync(md5sPath, 'utf-8') || JSON.stringify({ [FileType.pub]: {}, [FileType.entries]: {} }))
 
   exclude.push(`${entryRootPath}/**/*` || '')
   const publicMd5s = await handlePublic({ publicPath, exclude })

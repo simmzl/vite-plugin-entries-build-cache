@@ -35,6 +35,9 @@ export function readGitignore(): string[] {
   const gitignorePath = path.join(process.cwd(), '.gitignore')
   const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8')
   const gitignoreLines = gitignoreContent.split(/\r?\n/)
-  const gitignoreEntries = gitignoreLines.map((line) => line.trim()).filter((line) => line && !line.startsWith('#'))
+  const gitignoreEntries = gitignoreLines
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map((entry) => entry.startsWith('/') ? `.${entry}` : entry)
   return gitignoreEntries || []
 }
