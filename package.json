@@ -12,26 +12,28 @@
     "rollup",
     "rollup-plugin"
   ],
-  "homepage": "https://github.com/rollup/vite-plugin-entries-build-cache",
+  "homepage": "https://github.com/simmzl/vite-plugin-entries-build-cache",
   "author": "simmzl",
   "license": "MIT",
   "type": "module",
-  "repository": "rollup/vite-plugin-entries-build-cache",
+  "repository": "https://github.com/simmzl/vite-plugin-entries-build-cache",
   "bugs": {
-    "url": "https://github.com/rollup/vite-plugin-entries-build-cache/issues"
+    "url": "https://github.com/simmzl/vite-plugin-entries-build-cache/issues"
   },
   "scripts": {
     "prebuild": "rimraf -rf dist/*",
     "build": "rollup -c",
     "test": "node test/test.js",
     "pretest": "npm run build",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "release": "npm run build && release-it"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-typescript": "^11.1.2",
     "@types/fs-extra": "^11.0.1",
-    "fs-extra": "^11.1.1",
+    "release-it": "^16.1.2",
+    "rimraf": "^5.0.1",
     "rollup": "^3.26.2",
     "rollup-plugin-dts": "^5.3.0",
     "tslib": "^2.5.3",
@@ -40,6 +42,7 @@
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "fast-glob": "^3.3.0"
+    "fast-glob": "^3.3.0",
+    "fs-extra": "^11.1.1"
   }
 }

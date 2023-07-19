@@ -31,52 +31,6 @@ export function isEmptyInput(input: InputOption) {
   }
 }
 
-export function copyDir(src: string, dest: string) {
-  fs.emptyDirSync(dest)
-  fs.mkdirSync(dest, { recursive: true })
-
-  const files = fs.readdirSync(src)
-
-  files.forEach((file) => {
-    const srcPath = path.join(src, file)
-    const destPath = path.join(dest, file)
-
-    const stats = fs.statSync(srcPath)
-
-    if (stats.isFile()) {
-      fs.copyFileSync(srcPath, destPath)
-    } else if (stats.isDirectory()) {
-      copyDir(srcPath, destPath)
-    }
-  })
-}
-
-export async function mergeDirs(srcDir: string, destDir: string) {
-  const srcExists = await fs.pathExists(srcDir)
-  const destExists = await fs.pathExists(destDir)
-  if (!srcExists) {
-    throw new Error(`Source directory ${srcDir} does not exist`)
-  }
-  if (!destExists) {
-    await fs.mkdir(destDir)
-  }
-
-  const files = await fs.readdir(srcDir)
-  for (const file of files) {
-    const srcPath = `${srcDir}/${file}`
-    const destPath = `${destDir}/${file}`
-
-    const stat = await fs.stat(srcPath)
-    if (stat.isFile()) {
-      await fs.copyFile(srcPath, destPath)
-    }
-
-    if (stat.isDirectory()) {
-      await mergeDirs(srcPath, destPath)
-    }
-  }
-}
-
 export function readGitignore(): string[] {
   const gitignorePath = path.join(process.cwd(), '.gitignore')
   const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8')

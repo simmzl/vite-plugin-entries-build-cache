@@ -1,25 +1,46 @@
-# rollup-starter-plugin
+# vite-plugin-entries-build-cache
 
-This repo contains bare-bones code for creating a [Rollup plugin](https://rollupjs.org/guide/en/#plugins).
+English | [简体中文](./README.zh_CN.md)
 
-## Getting started
+`vite-plugin-entries-build-cache` is a Vite plugin that provides a caching mechanism to speed up the multi-entry build process. The plugin filters the input entry based on the project file changes, reducing the build time.
 
-Clone this repository and install its dependencies:
+Note: This plugin is only applicable to multi-entry projects and only takes effect when `build.emptyOutDir` in the vite configuration needs to be `false`.
+
+## Installation
 
 ```bash
-npx degit https://github.com/rollup/rollup-starter-plugin my-plugin
-cd my-plugin
-npm install
+npm i vite-plugin-entries-build-cache -D
 ```
 
-1. Edit `package.json`
+```bash
+yarn add vite-plugin-entries-build-cache -D
+```
 
-2. Edit `src/index.js`
+## Usage
 
-- rename the `starterPlugin` function
-- change `name: 'starter-plugin'` to your plugin name
-- implement or delete the function stubs. See [hooks guide](https://rollupjs.org/guide/en#hooks)
+To use `vite-plugin-entries-build-cache`, you need to register it as a Vite plugin. Here's an example:
 
-3. Add your preferred test framework and implement tests
+```js
+// vite.config.js
+import entriesBuildCache from 'vite-plugin-entries-build-cache'
+import { resolve } from 'path'
 
-See [conventions](https://rollupjs.org/guide/en/#conventions) for writing Rollup plugins.
+export default {
+  plugins: [
+    entriesBuildCache({
+      entryRootPath: resolve(process.cwd(), './src/pages')
+    })
+  ]
+}
+```
+
+## Configuration
+
+| Parameter Name: Type           | Default Value   | Description                                                   |
+| ------------------------------ | --------------- | ------------------------------------------------------------- |
+| `entryRootPath: string`        | -               | The parent folder path of the multi-entry folder              |
+| `rootPath?: string`            | `process.cwd()` | Project root path                                             |
+| `exclude?: string[]`           | `[]`            | Additional exclude files, .gitignore data will always be used |
+| `removeDeletedFiles?: boolean` | `false`         | Whether to delete files marked for deletion                   |
+| `debug?: boolean`              | `false`         | Whether to show debug logs                                    |
+

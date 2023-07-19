@@ -1,8 +1,8 @@
 import { useMD5 } from './md5'
-import { InputOptions, OutputOptions } from 'rollup'
+import { InputOptions } from 'rollup'
 import path from 'path'
 import { ResolvedConfig } from 'vite'
-import { copyDir, deletePaths, filterInput, isEmptyInput, mergeDirs, readGitignore } from './utlis'
+import { deletePaths, filterInput, isEmptyInput, readGitignore } from './utlis'
 import Log from './log'
 
 export interface PluginOptions {
@@ -16,7 +16,6 @@ export interface PluginOptions {
 export default async function starterPlugin(params?: PluginOptions) {
   const NAME = "vite-plugin-entries-build-cache"
   const CACHE_DIR = path.resolve(process.cwd(), `.cache/${NAME}`)
-  // const CACHE_DIST_DIR = path.resolve(CACHE_DIR, 'dist/')
   const { entryRootPath, exclude = [], removeDeletedFiles = false, rootPath = process.cwd(), debug } = params || {}
   const log = Log.getInstance(NAME, debug)
   
@@ -50,14 +49,8 @@ export default async function starterPlugin(params?: PluginOptions) {
       _emptyOutDir = !!emptyOutDir
       _outDir = outDir
       if (_emptyOutDir) log.warn("The vite option 'emptyOutDir: true' is not supported, please set it to false")
-      // Before the package starts, if the config of 'emptyOutDir' is true, copy the outDir to the CACHE_DIST_DIR
-      // console.time(`copy ${outDir} to ${CACHE_DIST_DIR}`)
-      // if (_emptyOutDir) copyDir(outDir, CACHE_DIST_DIR)
-      // console.timeEnd(`copy ${outDir} to ${CACHE_DIST_DIR}`)
     },
 
-    /* Type: (options: InputOptions) => InputOptions | null */
-    /* Kind: sync, sequential                               */
     async options(options: InputOptions) {
       // If there is a change in the public file, return options directly
       if (pub.isChanged) return options
@@ -85,17 +78,7 @@ export default async function starterPlugin(params?: PluginOptions) {
     },
 
     async closeBundle() {
-      // if (_emptyOutDir) {
-      //   console.time(`merge ${_outDir} to ${CACHE_DIST_DIR}`)
-      //   await mergeDirs(_outDir, CACHE_DIST_DIR)
-      //   console.timeEnd(`merge ${_outDir} to ${CACHE_DIST_DIR}`)
-      //   if (params.removeDeletedFiles) await deletePaths(del.map((i) => path.join(CACHE_DIST_DIR, i.replace(entryRootPath, ''))))
-      //   console.time(`merge ${CACHE_DIST_DIR} to ${_outDir}`)
-      //   await mergeDirs(CACHE_DIST_DIR, _outDir)
-      //   console.timeEnd(`merge ${CACHE_DIST_DIR} to ${_outDir}`)
-      // } else {
-      //   if (params.removeDeletedFiles) await deletePaths(del.map((i) => path.join(_outDir, i.replace(entryRootPath, ''))))
-      // }
+      // if (removeDeletedFiles && entryRootPath) await deletePaths(del.map((i) => path.join(_outDir, i.replace(entryRootPath, ''))))
       await writeMD5JSON()
       console.timeEnd('build time')
     },
