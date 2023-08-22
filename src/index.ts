@@ -56,8 +56,12 @@ export default async function starterPlugin(params: PluginOptions) {
     async options(options: InputOptions) {
       // If there is a change in the public file, return options directly
       if (pub.isChanged) return options
-      // If there is no change, means that no need to build
-      if (!isChanged) log.throwErr('No file changes detected, so no build required.')
+      // If there is no change, return options directly
+      if (!isChanged) {
+        log.warn("No file changes were detected, but a rebuild will be forced.")
+        // log.throwErr('No file changes detected, so no build required.')
+        return options
+      }
 
       const { input } = options
       if (!input) log.throwErr('The input option is required.')
