@@ -51,7 +51,7 @@ export default {
 
 ```bash
 ├── src
-|   ├── components
+│   ├── components
 │   ├── pages
 │   │   ├── index
 │   │   │   ├── index.html

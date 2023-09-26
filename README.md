@@ -51,7 +51,7 @@ Attention: Correctly configuring the `exclude` parameter can effectively reduce 
 
 ```bash
 ├── src
-|   ├── components
+│   ├── components
 │   ├── pages
 │   │   ├── index
 │   │   │   ├── index.html
