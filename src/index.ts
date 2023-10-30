@@ -56,16 +56,16 @@ export default async function starterPlugin(params: PluginOptions) {
     async options(options: InputOptions) {
       // If there is a change in the public file, return options directly
       if (pub.isChanged) {
-        await clearDir(_outDir)
-        log.info("Empty the output directory done.")
+        // await clearDir(_outDir)
+        // log.info("Empty the output directory done.")
         return options
       }
       // If there is no change, return options directly
       if (!isChanged) {
         log.warn("No file changes were detected, but a rebuild will be forced.")
         // log.throwErr('No file changes detected, so no build required.')
-        await clearDir(_outDir)
-        log.info("Empty the output directory done.")
+        // await clearDir(_outDir)
+        // log.info("Empty the output directory done.")
         return options
       }
 
