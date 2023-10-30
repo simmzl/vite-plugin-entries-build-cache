@@ -41,3 +41,7 @@ export function readGitignore(): string[] {
     .map((entry) => entry.startsWith('/') ? `.${entry}` : entry)
   return gitignoreEntries || []
 }
+
+export function clearDir(dir: string) {
+  return fs.emptyDir(dir)
+}
