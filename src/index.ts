@@ -11,6 +11,7 @@ export interface PluginOptions {
   exclude?: string[] // Additional exclude files, gitignore data will always be used
   removeDeletedFiles?: boolean // Delete files marked for deletion
   debug?: boolean // Show debug log
+  experiment?: boolean
 }
 
 export default async function starterPlugin(params: PluginOptions) {
@@ -58,8 +59,11 @@ export default async function starterPlugin(params: PluginOptions) {
     async options(options: InputOptions) {
       // If there is a change in the public file, return options directly
       if (pub.isChanged) {
-        // await clearDir(_outDir)
-        // log.info("Empty the output directory done.")
+        if (params.experiment) {
+          await clearDir(_outDir)
+          log.info("Empty the output directory done.")
+        }
+        
         return options
       }
       // If there is no change, return options directly
