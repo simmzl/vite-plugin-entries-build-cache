@@ -36,6 +36,8 @@ export default async function starterPlugin(params: PluginOptions) {
   // Vite build.outDir
   let _outDir = ''
 
+  let isErrored = false
+
   return {
     name: NAME,
 
@@ -89,8 +91,16 @@ export default async function starterPlugin(params: PluginOptions) {
       return { ...options, input: newInput }
     },
 
+    buildEnd(err: Error) {
+      log.info('buildEnd')
+      if (err) isErrored = true
+    },
+    renderError() {
+      if (!isErrored) isErrored = true
+    },
     async closeBundle() {
       // if (removeDeletedFiles && entryRootPath) await deletePaths(del.map((i) => path.join(_outDir, i.replace(entryRootPath, ''))))
+      if (isErrored) return
       await writeMD5JSON()
       console.timeEnd('build time')
     },

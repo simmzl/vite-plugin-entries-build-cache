@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-entries-build-cache",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Rollup plugin entries build cache",
   "main": "dist/vite-plugin-entries-build-cache.cjs.js",
   "module": "dist/vite-plugin-entries-build-cache.es.js",
